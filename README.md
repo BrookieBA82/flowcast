@@ -1,0 +1,1 @@
+Flowcast is a forward-looking cash flow forecasting and budgeting engine.
