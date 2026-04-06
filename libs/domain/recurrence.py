@@ -15,8 +15,9 @@ class Recurrence:
         raise NotImplementedError
 
 
-def last_day_of_month(year: int, month: int) -> int:
-    return calendar.monthrange(year, month)[1]
+    @staticmethod
+    def last_day_of_month(year: int, month: int) -> int:
+        return calendar.monthrange(year, month)[1]
 
 
 @dataclass(frozen=True)
@@ -24,7 +25,7 @@ class OneTimeRecurrence(Recurrence):
     run_date: date
 
     def occurrences_between(self, start: date, end: date) -> List[date]:
-        if start <= self.run_date <= end:
+        if start <= self.run_date < end:
             return [self.run_date]
         return []
 
@@ -40,7 +41,7 @@ class MonthlyRecurrence(Recurrence):
         month = start.month
 
         while (year < end.year) or (year == end.year and month <= end.month):
-            max_day = last_day_of_month(year, month)
+            max_day = Recurrence.last_day_of_month(year, month)
 
             for day in self.days:
                 actual_day = min(day, max_day)
@@ -66,7 +67,7 @@ class AnnualRecurrence(Recurrence):
         results: List[date] = []
 
         for year in range(start.year, end.year + 1):
-            max_day = last_day_of_month(year, self.month)
+            max_day = Recurrence.last_day_of_month(year, self.month)
             actual_day = min(self.day, max_day)
 
             occurrence = date(year, self.month, actual_day)

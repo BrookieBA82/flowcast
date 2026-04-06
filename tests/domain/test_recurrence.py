@@ -1,5 +1,43 @@
 from datetime import date
-from libs.domain.recurrence import MonthlyRecurrence, AnnualRecurrence
+from libs.domain.recurrence import MonthlyRecurrence, AnnualRecurrence, OneTimeRecurrence
+
+
+def test_one_time_in_range():
+    r = OneTimeRecurrence(date(2026, 1, 1))
+
+    results = r.occurrences_between(
+        date(2026, 1, 1),
+        date(2026, 1, 2)
+    )
+
+    assert results == [
+        date(2026, 1, 1),
+    ]
+
+
+def test_one_time_out_of_range():
+    r = OneTimeRecurrence(date(2026, 1, 1))
+
+    results = r.occurrences_between(
+        date(2026, 1, 1),
+        date(2026, 1, 1)
+    )
+
+    assert results == [ ]
+
+    results = r.occurrences_between(
+        date(2026, 1, 2),
+        date(2026, 1, 3)
+    )
+
+    assert results == [ ]
+
+    results = r.occurrences_between(
+        date(2025, 12, 31),
+        date(2026, 1, 1)
+    )
+
+    assert results == [ ]
 
 
 def test_monthly_single_day():
@@ -36,11 +74,28 @@ def test_monthly_31_clamps():
 
     results = r.occurrences_between(
         date(2026, 2, 1),
-        date(2026, 3, 1)
+        date(2026, 5, 1)
     )
 
     assert results == [
-        date(2026, 2, 28),  # clamped
+        date(2026, 2, 28),
+        date(2026, 3, 31),
+        date(2026, 4, 30),
+    ]
+
+
+def test_monthly_duplication():
+    r = MonthlyRecurrence(days=[30, 31])
+
+    results = r.occurrences_between(
+        date(2026, 4, 1),
+        date(2026, 5, 1)
+    )
+
+    # This is desirable - we do not want to lose a recurrence, even if it ends up on the same day:
+    assert results == [
+        date(2026, 4, 30),
+        date(2026, 4, 30),
     ]
 
 
