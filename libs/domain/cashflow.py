@@ -36,7 +36,6 @@ class CashFlowInstruction:
     recurrence: Recurrence
     start_date: date
     end_date: Optional[date]
-    created_on: datetime
 
     def __post_init__(self):
         if self.end_date and self.start_date >= self.end_date:
