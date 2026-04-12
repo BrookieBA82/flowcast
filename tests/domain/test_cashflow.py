@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 from libs.domain.cashflow import CashFlowSeries, CashFlowInstruction
 from libs.domain.recurrence import MonthlyRecurrence,OneTimeRecurrence
 
@@ -11,7 +11,6 @@ def test_effective_range_basic():
         recurrence=OneTimeRecurrence(date(2026, 1, 10)),
         start_date=date(2026, 1, 1),
         end_date=None,
-        created_on=datetime.now(),
     )
 
     result = instr.effective_range(date(2026, 1, 5), date(2026, 1, 20))
@@ -26,7 +25,6 @@ def test_effective_range_no_overlap():
         recurrence=OneTimeRecurrence(date(2026, 1, 10)),
         start_date=date(2026, 2, 1),
         end_date=None,
-        created_on=datetime.now(),
     )
 
     assert instr.effective_range(date(2026, 1, 1), date(2026, 1, 31)) is None
@@ -40,7 +38,6 @@ def test_events_respect_start_date():
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 2, 1),
         end_date=None,
-        created_on=datetime.now(),
     )
 
     events = instr.events_between(date(2026, 1, 1), date(2026, 3, 31))
@@ -59,7 +56,6 @@ def test_events_respect_end_date():
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
         end_date=date(2026, 2, 15),
-        created_on=datetime.now(),
     )
 
     events = instr.events_between(date(2026, 1, 1), date(2026, 3, 31))
@@ -78,7 +74,6 @@ def test_one_time_event_generation():
         recurrence=OneTimeRecurrence(date(2026, 1, 10)),
         start_date=date(2026, 1, 1),
         end_date=None,
-        created_on=datetime.now(),
     )
 
     events = instr.events_between(date(2026, 1, 1), date(2026, 1, 31))
@@ -97,7 +92,6 @@ def test_series_filters_by_series_id():
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
         end_date=None,
-        created_on=datetime.now(),
     )
 
     instr2 = CashFlowInstruction(
@@ -107,7 +101,6 @@ def test_series_filters_by_series_id():
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
         end_date=None,
-        created_on=datetime.now(),
     )
 
     events = series.events_for_series(
@@ -130,7 +123,6 @@ def test_series_sorts_events():
         recurrence=MonthlyRecurrence([15, 1]),
         start_date=date(2026, 1, 1),
         end_date=None,
-        created_on=datetime.now(),
     )
 
     events = series.events_for_series(
@@ -155,7 +147,6 @@ def test_instruction_versions_split_correctly():
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
         end_date=date(2026, 3, 1),
-        created_on=datetime(2026, 1, 1),
     )
 
     instr_new = CashFlowInstruction(
@@ -165,7 +156,6 @@ def test_instruction_versions_split_correctly():
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 3, 1),
         end_date=None,
-        created_on=datetime(2026, 3, 1),
     )
 
     events = series.events_for_series(
