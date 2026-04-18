@@ -9,6 +9,7 @@ def make_instruction(series_id="s1", start=date(2024, 1, 1), end=None, amount=10
     return CashFlowInstruction(
         id=f"{series_id}-{start}",
         series_id=series_id,
+        account_id="a1",
         amount=amount,
         recurrence=MonthlyRecurrence([monthly_day]),
         start_date=start,
