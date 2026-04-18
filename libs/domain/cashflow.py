@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date
 from typing import List, Optional
 from libs.domain.recurrence import Recurrence
 
@@ -23,6 +23,7 @@ class CashFlowSeries:
 @dataclass(frozen=True)
 class CashFlowEvent:
     series_id: str
+    account_id: str
     instruction_id: str
     date: date
     amount: float
@@ -32,6 +33,7 @@ class CashFlowEvent:
 class CashFlowInstruction:
     id: str
     series_id: str
+    account_id: str
     amount: float
     recurrence: Recurrence
     start_date: date
@@ -60,4 +62,9 @@ class CashFlowInstruction:
         return [self._event_for_date(d) for d in dates]
 
     def _event_for_date(self, d: date) -> CashFlowEvent:
-        return CashFlowEvent(series_id=self.series_id, instruction_id=self.id, date=d, amount=self.amount)
+        return CashFlowEvent(
+            series_id=self.series_id,
+            account_id=self.account_id,
+            instruction_id=self.id,
+            date=d,
+            amount=self.amount)

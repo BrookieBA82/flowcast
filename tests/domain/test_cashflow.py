@@ -7,6 +7,7 @@ def test_effective_range_basic():
     instr = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=100,
         recurrence=OneTimeRecurrence(date(2026, 1, 10)),
         start_date=date(2026, 1, 1),
@@ -21,6 +22,7 @@ def test_effective_range_no_overlap():
     instr = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=100,
         recurrence=OneTimeRecurrence(date(2026, 1, 10)),
         start_date=date(2026, 2, 1),
@@ -34,6 +36,7 @@ def test_events_respect_start_date():
     instr = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=100,
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 2, 1),
@@ -52,6 +55,7 @@ def test_events_respect_end_date():
     instr = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=100,
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
@@ -70,6 +74,7 @@ def test_one_time_event_generation():
     instr = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=500,
         recurrence=OneTimeRecurrence(date(2026, 1, 10)),
         start_date=date(2026, 1, 1),
@@ -88,6 +93,7 @@ def test_series_filters_by_series_id():
     instr1 = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=100,
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
@@ -97,6 +103,7 @@ def test_series_filters_by_series_id():
     instr2 = CashFlowInstruction(
         id="i2",
         series_id="s2",
+        account_id="a1",
         amount=200,
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
@@ -119,6 +126,7 @@ def test_series_sorts_events():
     instr = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=100,
         recurrence=MonthlyRecurrence([15, 1]),
         start_date=date(2026, 1, 1),
@@ -143,6 +151,7 @@ def test_instruction_versions_split_correctly():
     instr_old = CashFlowInstruction(
         id="i1",
         series_id="s1",
+        account_id="a1",
         amount=1000,
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 1, 1),
@@ -152,6 +161,7 @@ def test_instruction_versions_split_correctly():
     instr_new = CashFlowInstruction(
         id="i2",
         series_id="s1",
+        account_id="a1",
         amount=1200,
         recurrence=MonthlyRecurrence([1]),
         start_date=date(2026, 3, 1),
