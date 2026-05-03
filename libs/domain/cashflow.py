@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from typing import List, Optional
 from libs.domain.recurrence import Recurrence
@@ -27,6 +27,34 @@ class CashFlowEvent:
     instruction_id: str
     date: date
     amount: float
+    orig_date: date = field(default=None)
+    id: str = field(init=False)
+
+    def __post_init__(self):
+        orig = self.orig_date or self.date
+        object.__setattr__(self, "orig_date", orig)
+        object.__setattr__(
+            self,
+            "id",
+            CashFlowEvent._generate_id(
+                self.series_id,
+                self.instruction_id,
+                orig.isoformat(),   # 🔑 stable across deferrals
+            )
+        )
+
+    def defer(self, deferral_date: date) -> "CashFlowEvent":
+        return CashFlowEvent(
+            series_id=self.series_id,
+            account_id=self.account_id,
+            instruction_id=self.instruction_id,
+            date=deferral_date,
+            amount=self.amount,
+            orig_date=self.orig_date)
+
+    @staticmethod
+    def _generate_id(series_id: str, instruction_id: str, orig_date: str) -> str:
+        return f"{series_id}:{instruction_id}:{orig_date}"
 
 
 @dataclass(frozen=True)
